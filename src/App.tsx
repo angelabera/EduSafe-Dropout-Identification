@@ -103,13 +103,19 @@ function App() {
               <p>Enterprise-grade data protection ensuring student privacy at all times.</p>
             </div>
           </div>
+
+          <div className="hero-cta" style={{ marginTop: '4rem', animation: 'fade-in-up 0.8s ease-out 0.8s backwards' }}>
+            <a href="#upload" className="upload-button" style={{ padding: '1.25rem 3rem', fontSize: '1.1rem' }}>
+              Start Analysis Now
+            </a>
+          </div>
         </div>
       </header>
 
       <main className="app-main">
         {/* Upload Section */}
-        <section className="upload-section">
-          <h2> Upload Student Data</h2>
+        <section className="upload-section" id="upload">
+          <h2><Activity size={24} style={{ verticalAlign: 'middle', marginRight: '10px', color: 'var(--color-primary)' }} /> Upload Student Data</h2>
           <p className="section-description">
             Upload three CSV files containing attendance, assessment, and attempts data.
           </p>
@@ -224,7 +230,20 @@ function App() {
 
       {/* Footer */}
       <footer className="app-footer">
-        <p>@2026 EduSafe | Built with 💙 by Angela Bera</p>
+        <div className="app-footer-content">
+          <div className="footer-brand">
+            <Shield size={24} />
+            Edu<strong>Safe</strong>
+          </div>
+          <ul className="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Contact Support</a></li>
+          </ul>
+          <div className="footer-bottom">
+            <p>© <span className="footer-year">2026</span> EduSafe | Built with 💙 by Angela Bera</p>
+          </div>
+        </div>
       </footer>
     </div>
   );
