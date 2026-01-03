@@ -206,13 +206,21 @@ section {
 }
 
 .hero-subtitle {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 400;
   color: #cbd5e1;
   margin-bottom: 4rem;
   letter-spacing: -0.01em;
   animation: fade-in-up 0.8s ease-out 0.4s backwards;
   max-width: 700px;
+}
+
+.subtitle-tagline {
+  display: block;
+  font-size: 1.20rem;
+  margin-top: 0.5rem;
+  color: #a0aec0;
+  font-weight: 300;
 }
 
 /* Hero Cards */

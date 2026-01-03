@@ -84,6 +84,8 @@ function App() {
           </div>
           <p className="hero-subtitle">
             Next-Generation Student Dropout Risk Identification System
+            <br />
+            <span className="subtitle-tagline">Empower educators with data-driven insights to identify at-risk students early</span>
           </p>
           
           <div className="hero-cards">
