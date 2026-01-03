@@ -103,12 +103,6 @@ function App() {
               <p>Enterprise-grade data protection ensuring student privacy at all times.</p>
             </div>
           </div>
-
-          <div className="hero-cta" style={{ marginTop: '4rem', animation: 'fade-in-up 0.8s ease-out 0.8s backwards' }}>
-            <a href="#upload" className="upload-button" style={{ padding: '1.25rem 3rem', fontSize: '1.1rem' }}>
-              Start Analysis Now
-            </a>
-          </div>
         </div>
       </header>
 
