@@ -1,4 +1,4 @@
-# 🛡️ EduSafe - Student Early-Risk Identification Dashboard
+#  EduSafe - Student Early-Risk Identification Dashboard
 
 A cutting-edge, intelligent dashboard for identifying and monitoring at-risk students through data-driven analysis. EduSafe processes attendance, assessment, and attempt records to provide educators with actionable insights and early warning signals.
 
@@ -204,30 +204,11 @@ getRiskDistribution(profiles: StudentProfile[]): RiskDistribution
 ```
 Calculates the distribution of risk categories.
 
-## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Built with 💙 by **Angela Bera**
 - Icon library: [Lucide React](https://lucide.dev/)
 - CSV parsing: [Papa Parse](https://www.papaparse.com/)
 - Build tool: [Vite](https://vitejs.dev/)
-
-## 📞 Support
-
-For support, email support@edusafe.com or open an issue on GitHub.
-
----
 
