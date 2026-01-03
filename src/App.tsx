@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { Shield, Zap, Lock, Activity } from 'lucide-react';
+import { Shield, Zap, Lock, Activity, ChevronDown } from 'lucide-react';
 import { CSVUpload, StudentTable, RiskChart, AlertBanner } from './components';
 import { analyzeAllStudents, getRiskDistribution } from './utils/riskCalculator';
 import heroBg from './assets/hero-bg.svg';
@@ -102,6 +102,10 @@ function App() {
               <h3>Secure & Private</h3>
               <p>Enterprise-grade data protection ensuring student privacy at all times.</p>
             </div>
+          </div>
+
+          <div className="scroll-indicator" onClick={() => document.getElementById('upload')?.scrollIntoView({ behavior: 'smooth' })}>
+            <ChevronDown size={32} />
           </div>
         </div>
       </header>
