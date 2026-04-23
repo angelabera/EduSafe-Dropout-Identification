@@ -267,7 +267,7 @@ function Home() {
               <h4>Resources</h4>
               <ul>
                 <li><Link to="/documentation">Documentation</Link></li>
-                <li><a href="#">Help Center</a></li>
+                <li><Link to="/help-center">Help Center</Link></li>
                 <li><Link to="/privacy-policy">Privacy Policy</Link></li>
                 <li><Link to="/security">Security</Link></li>
               </ul>
