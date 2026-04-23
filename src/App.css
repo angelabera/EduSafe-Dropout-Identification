@@ -1962,6 +1962,254 @@ section h2 {
 }
 
 /* ========================================
+   Security Page Styles
+   ======================================== */
+
+.security-page {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.security-header {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3rem 2rem;
+  position: relative;
+}
+
+.security-header-content {
+  text-align: center;
+}
+
+.security-header-content h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.security-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.security-main {
+  flex: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  width: 100%;
+}
+
+.security-section {
+  margin-bottom: 3.5rem;
+}
+
+.security-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  font-weight: 700;
+}
+
+.security-section h2 svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.security-section > p {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.security-section-last {
+  margin-bottom: 0;
+}
+
+/* Security Subsections */
+.security-subsection {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.security-subsection:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.security-subsection h3 {
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.security-subsection p {
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.security-subsection p:last-child {
+  margin-bottom: 0;
+}
+
+/* Security Lists */
+.security-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.security-list li {
+  padding: 0.75rem 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.security-list li:last-child {
+  border-bottom: none;
+}
+
+.security-list li strong {
+  color: white;
+}
+
+/* Security Notice Box */
+.security-notice {
+  background: rgba(34, 197, 94, 0.1);
+  border-left: 4px solid rgba(34, 197, 94, 0.5);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.security-notice p {
+  margin-bottom: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.security-notice p:last-child {
+  margin-bottom: 0;
+}
+
+.security-notice p a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.security-notice p a:hover {
+  text-decoration: underline;
+}
+
+.security-notice h3 {
+  font-size: 1.1rem;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+/* Security Contact Box */
+.security-contact-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.security-contact-item {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.security-contact-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-4px);
+}
+
+.security-contact-item h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--color-primary);
+}
+
+.security-contact-item a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  display: inline-block;
+  word-break: break-all;
+}
+
+.security-contact-item a:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .security-header-content h1 {
+    font-size: 2rem;
+  }
+
+  .security-section h2 {
+    font-size: 1.4rem;
+  }
+
+  .security-main {
+    padding: 2rem 1rem;
+  }
+
+  .security-subsection {
+    padding: 1.25rem;
+  }
+
+  .security-contact-box {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .security-notice {
+    padding: 1rem 1.25rem;
+  }
+}
+
+/* ========================================
    Responsive Design
    ======================================== */
 @media (max-width: 768px) {

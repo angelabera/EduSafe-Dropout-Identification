@@ -269,7 +269,7 @@ function Home() {
                 <li><Link to="/documentation">Documentation</Link></li>
                 <li><a href="#">Help Center</a></li>
                 <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-                <li><a href="#">Security</a></li>
+                <li><Link to="/security">Security</Link></li>
               </ul>
             </div>
 
