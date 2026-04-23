@@ -367,9 +367,9 @@ function HelpCenter() {
         <section className="help-feedback-section">
           <h2>Help Us Improve</h2>
           <p>We'd love to hear your feedback and suggestions for improving EduSafe.</p>
-          <a href="mailto:feedback@edusafe.com" className="feedback-button">
+          <Link to="/feedback" className="feedback-button">
             Send Feedback
-          </a>
+          </Link>
         </section>
       </main>
     </div>

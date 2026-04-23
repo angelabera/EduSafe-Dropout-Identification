@@ -307,7 +307,7 @@ function Documentation() {
             <div className="support-links">
               <a href="mailto:support@edusafe.com" className="support-link">📧 support@edusafe.com</a>
               <a href="#" className="support-link">💬 Live Chat Support</a>
-              <a href="#" className="support-link">📋 Submit Feedback</a>
+              <Link to="/feedback" className="support-link">📋 Submit Feedback</Link>
             </div>
           </div>
         </section>
