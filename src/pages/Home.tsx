@@ -266,7 +266,7 @@ function Home() {
             <div className="footer-nav-group">
               <h4>Resources</h4>
               <ul>
-                <li><a href="#">Documentation</a></li>
+                <li><Link to="/documentation">Documentation</Link></li>
                 <li><a href="#">Help Center</a></li>
                 <li><a href="#">Privacy Policy</a></li>
                 <li><a href="#">Security</a></li>
