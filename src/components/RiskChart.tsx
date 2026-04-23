@@ -77,7 +77,7 @@ export function RiskChart({ distribution }: RiskChartProps) {
                 borderRadius: '8px',
                 color: '#fff'
               }}
-              formatter={(value: number | undefined) => [`${value ?? 0} students`, 'Count']}
+              formatter={(value: any) => [`${value ?? 0} students`, 'Count']}
             />
             <Bar 
               dataKey="value" 
