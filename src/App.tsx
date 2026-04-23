@@ -5,6 +5,7 @@ import Documentation from './pages/Documentation';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Security from './pages/Security';
 import HelpCenter from './pages/HelpCenter';
+import Feedback from './pages/Feedback';
 import './App.css';
 
 /**
@@ -20,6 +21,7 @@ function App() {
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/security" element={<Security />} />
       <Route path="/help-center" element={<HelpCenter />} />
+      <Route path="/feedback" element={<Feedback />} />
     </Routes>
   );
 }

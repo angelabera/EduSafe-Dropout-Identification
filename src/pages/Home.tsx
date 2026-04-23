@@ -277,7 +277,7 @@ function Home() {
               <h4>Contact</h4>
               <ul>
                 <li><a href="mailto:support@edusafe.com">support@edusafe.com</a></li>
-                <li><a href="#">Feedback</a></li>
+                <li><Link to="/feedback">Feedback</Link></li>
                 <li><a href="#">System Status</a></li>
               </ul>
             </div>
