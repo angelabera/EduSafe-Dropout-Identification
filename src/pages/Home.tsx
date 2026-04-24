@@ -137,40 +137,66 @@ function Home() {
     const criticalStudents = studentProfiles.filter(s => s.riskScore >= 70).length;
 
     // Executive Summary Section
-    checkPageBreak(45);
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
+    checkPageBreak(55);
+    doc.setFontSize(16);
+    doc.setTextColor(59, 130, 246);
+    doc.setFont('', 'bold');
     doc.text('Executive Summary', margins.left, yPosition);
-    yPosition += 8;
+    doc.setFont('', 'normal');
+    yPosition += 10;
 
-    doc.setFillColor(240, 248, 255);
-    doc.rect(margins.left, yPosition - 6, pageWidth - 2 * margins.right, 35, 'F');
-    doc.setDrawColor(59, 130, 246);
-    doc.rect(margins.left, yPosition - 6, pageWidth - 2 * margins.right, 35);
-
-    doc.setFontSize(10);
-    doc.setTextColor(0, 0, 0);
-    const summaryData = [
-      { label: 'Total Students:', value: totalStudents },
-      { label: 'Average Risk Score:', value: avgRiskScore },
-      { label: 'At Risk Students:', value: riskDistribution.atRisk },
-      { label: 'Watchlist Students:', value: riskDistribution.watchlist },
-      { label: 'Safe Students:', value: riskDistribution.safe },
-      { label: 'Critical Cases (Score >=70):', value: criticalStudents },
+    // Create individual metric cards
+    const metrics = [
+      { label: 'Total Students', value: totalStudents, color: [59, 130, 246] },
+      { label: 'Avg Risk Score', value: avgRiskScore, color: [100, 100, 100] },
+      { label: 'At Risk', value: riskDistribution.atRisk, color: [239, 68, 68] },
+      { label: 'Watchlist', value: riskDistribution.watchlist, color: [245, 158, 11] },
+      { label: 'Safe', value: riskDistribution.safe, color: [16, 185, 129] },
+      { label: 'Critical Cases', value: criticalStudents, color: [220, 38, 38] },
     ];
 
-    let summaryY = yPosition - 3;
-    summaryData.forEach(item => {
-      doc.text(`${item.label}`, margins.left + 3, summaryY);
-      doc.setTextColor(59, 130, 246);
+    const cardWidth = (pageWidth - 2 * margins.left - 10) / 3; // 3 cards per row
+    let cardX = margins.left;
+    let cardY = yPosition;
+    let cardIndex = 0;
+
+    metrics.forEach((metric, idx) => {
+      // New row every 3 items
+      if (idx > 0 && idx % 3 === 0) {
+        cardY += 22;
+        cardX = margins.left;
+      }
+
+      // Card background (light shade of metric color)
+      const lightColor = [
+        Math.min(255, metric.color[0] + 180),
+        Math.min(255, metric.color[1] + 180),
+        Math.min(255, metric.color[2] + 180),
+      ];
+      doc.setFillColor(lightColor[0], lightColor[1], lightColor[2]);
+      doc.rect(cardX, cardY - 2, cardWidth - 2, 18, 'F');
+
+      // Card border
+      doc.setDrawColor(metric.color[0], metric.color[1], metric.color[2]);
+      doc.setLineWidth(0.5);
+      doc.rect(cardX, cardY - 2, cardWidth - 2, 18);
+
+      // Label
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(metric.label, cardX + 3, cardY + 1);
+
+      // Value
+      doc.setFontSize(12);
       doc.setFont('', 'bold');
-      doc.text(item.value.toString(), pageWidth - margins.right - 3, summaryY, { align: 'right' });
+      doc.setTextColor(metric.color[0], metric.color[1], metric.color[2]);
+      doc.text(metric.value.toString(), cardX + cardWidth - 5, cardY + 7, { align: 'right' });
       doc.setFont('', 'normal');
-      doc.setTextColor(0, 0, 0);
-      summaryY += 5;
+
+      cardX += cardWidth + 3;
     });
 
-    yPosition += 40;
+    yPosition += 50;
 
     // Risk Distribution Section
     checkPageBreak(40);
