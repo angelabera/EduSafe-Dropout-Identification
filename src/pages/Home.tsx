@@ -70,205 +70,294 @@ function Home() {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    let yPosition = 10;
+    const margins = { top: 15, left: 15, right: 15, bottom: 15 };
+    let yPosition = margins.top;
 
     // Helper function to check page break
     const checkPageBreak = (space: number) => {
-      if (yPosition + space > pageHeight - 10) {
+      if (yPosition + space > pageHeight - margins.bottom) {
+        // Add footer
+        addFooter();
         doc.addPage();
-        yPosition = 10;
+        yPosition = margins.top;
+        // Add header on new page
+        addPageHeader();
       }
     };
 
-    // Title
-    doc.setFontSize(20);
+    // Add page header (for non-first pages)
+    const addPageHeader = () => {
+      doc.setFontSize(9);
+      doc.setTextColor(150, 150, 150);
+      doc.text('EduSafe Risk Analysis Report', margins.left, margins.top - 5);
+    };
+
+    // Add footer
+    const addFooter = () => {
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      const pageCount = doc.internal.pages.length - 1;
+      doc.text(
+        `Page ${pageCount}`,
+        pageWidth / 2,
+        pageHeight - 8,
+        { align: 'center' }
+      );
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margins.left, pageHeight - 10, pageWidth - margins.right, pageHeight - 10);
+    };
+
+    // Title Page
+    doc.setFontSize(28);
     doc.setTextColor(59, 130, 246);
-    doc.text('EduSafe Risk Analysis Report', pageWidth / 2, yPosition, { align: 'center' });
+    doc.text('EduSafe', pageWidth / 2, yPosition, { align: 'center' });
     yPosition += 10;
 
-    // Date
-    doc.setFontSize(10);
+    doc.setFontSize(18);
     doc.setTextColor(100, 100, 100);
+    doc.text('Risk Analysis Report', pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 15;
+
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
     doc.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 5;
+    doc.text(`Report Period: ${new Date().toLocaleDateString()}`, pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 20;
+
+    // Divider
+    doc.setDrawColor(59, 130, 246);
+    doc.setLineWidth(1);
+    doc.line(margins.left, yPosition, pageWidth - margins.right, yPosition);
     yPosition += 8;
 
-    // Executive Summary Box
-    checkPageBreak(30);
-    doc.setDrawColor(59, 130, 246);
-    doc.setLineWidth(0.5);
-    doc.rect(10, yPosition - 2, pageWidth - 20, 28);
-    
-    doc.setFontSize(12);
-    doc.setTextColor(59, 130, 246);
-    doc.text('📊 Executive Summary', 12, yPosition + 2);
-    
-    yPosition += 6;
-    doc.setFontSize(10);
-    doc.setTextColor(0, 0, 0);
-    
+    // Calculate metrics
     const totalStudents = studentProfiles.length;
     const avgRiskScore = (studentProfiles.reduce((sum, s) => sum + s.riskScore, 0) / totalStudents).toFixed(1);
     const criticalStudents = studentProfiles.filter(s => s.riskScore >= 70).length;
-    
-    doc.text(`Total Students: ${totalStudents} | Average Risk Score: ${avgRiskScore}`, 12, yPosition);
-    yPosition += 5;
-    doc.text(`At Risk: ${riskDistribution.atRisk} | Watchlist: ${riskDistribution.watchlist} | Safe: ${riskDistribution.safe}`, 12, yPosition);
-    yPosition += 5;
-    doc.text(`Critical Cases (Score ≥70): ${criticalStudents}`, 12, yPosition);
+
+    // Executive Summary Section
+    checkPageBreak(45);
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Executive Summary', margins.left, yPosition);
     yPosition += 8;
 
-    // Risk Distribution Visualization
-    checkPageBreak(20);
-    doc.setFontSize(12);
+    doc.setFillColor(240, 248, 255);
+    doc.rect(margins.left, yPosition - 6, pageWidth - 2 * margins.right, 35, 'F');
+    doc.setDrawColor(59, 130, 246);
+    doc.rect(margins.left, yPosition - 6, pageWidth - 2 * margins.right, 35);
+
+    doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text('Risk Distribution', 12, yPosition);
-    yPosition += 6;
-    
+    const summaryData = [
+      { label: 'Total Students:', value: totalStudents },
+      { label: 'Average Risk Score:', value: avgRiskScore },
+      { label: 'At Risk Students:', value: riskDistribution.atRisk },
+      { label: 'Watchlist Students:', value: riskDistribution.watchlist },
+      { label: 'Safe Students:', value: riskDistribution.safe },
+      { label: 'Critical Cases (Score ≥70):', value: criticalStudents },
+    ];
+
+    let summaryY = yPosition - 3;
+    summaryData.forEach(item => {
+      doc.text(`${item.label}`, margins.left + 3, summaryY);
+      doc.setTextColor(59, 130, 246);
+      doc.setFont(undefined, 'bold');
+      doc.text(item.value.toString(), pageWidth - margins.right - 3, summaryY, { align: 'right' });
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(0, 0, 0);
+      summaryY += 5;
+    });
+
+    yPosition += 40;
+
+    // Risk Distribution Section
+    checkPageBreak(40);
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Risk Distribution Analysis', margins.left, yPosition);
+    yPosition += 8;
+
     doc.setFontSize(10);
     const totalForPercent = totalStudents;
     const safePercent = ((riskDistribution.safe / totalForPercent) * 100).toFixed(0);
     const watchlistPercent = ((riskDistribution.watchlist / totalForPercent) * 100).toFixed(0);
     const atRiskPercent = ((riskDistribution.atRisk / totalForPercent) * 100).toFixed(0);
-    
-    // Safe bar
+
+    // Safe
     doc.setTextColor(16, 185, 129);
-    doc.text(`Safe (${safePercent}%):`, 12, yPosition);
+    doc.setFont(undefined, 'bold');
+    doc.text(`Safe: ${safePercent}% (${riskDistribution.safe} students)`, margins.left, yPosition);
+    doc.setFont(undefined, 'normal');
     doc.setDrawColor(16, 185, 129);
-    doc.rect(50, yPosition - 2, parseInt(safePercent) * 0.8, 4, 'F');
-    yPosition += 5;
-    
-    // Watchlist bar
+    doc.setFillColor(16, 185, 129);
+    doc.rect(margins.left + 70, yPosition - 3, parseInt(safePercent) * 0.9, 4, 'F');
+    yPosition += 7;
+
+    // Watchlist
     doc.setTextColor(245, 158, 11);
-    doc.text(`Watchlist (${watchlistPercent}%):`, 12, yPosition);
+    doc.setFont(undefined, 'bold');
+    doc.text(`Watchlist: ${watchlistPercent}% (${riskDistribution.watchlist} students)`, margins.left, yPosition);
+    doc.setFont(undefined, 'normal');
     doc.setDrawColor(245, 158, 11);
-    doc.rect(50, yPosition - 2, parseInt(watchlistPercent) * 0.8, 4, 'F');
-    yPosition += 5;
-    
-    // At Risk bar
+    doc.setFillColor(245, 158, 11);
+    doc.rect(margins.left + 70, yPosition - 3, parseInt(watchlistPercent) * 0.9, 4, 'F');
+    yPosition += 7;
+
+    // At Risk
     doc.setTextColor(239, 68, 68);
-    doc.text(`At Risk (${atRiskPercent}%):`, 12, yPosition);
+    doc.setFont(undefined, 'bold');
+    doc.text(`At Risk: ${atRiskPercent}% (${riskDistribution.atRisk} students)`, margins.left, yPosition);
+    doc.setFont(undefined, 'normal');
     doc.setDrawColor(239, 68, 68);
-    doc.rect(50, yPosition - 2, parseInt(atRiskPercent) * 0.8, 4, 'F');
-    yPosition += 8;
+    doc.setFillColor(239, 68, 68);
+    doc.rect(margins.left + 70, yPosition - 3, parseInt(atRiskPercent) * 0.9, 4, 'F');
+    yPosition += 12;
 
     // Top At-Risk Students Section
-    checkPageBreak(40);
-    doc.setFontSize(12);
+    checkPageBreak(50);
+    doc.setFontSize(14);
     doc.setTextColor(239, 68, 68);
-    doc.text('🚨 Top At-Risk Students', 12, yPosition);
-    yPosition += 6;
-    
+    doc.text('Critical At-Risk Students', margins.left, yPosition);
+    yPosition += 8;
+
     const topAtRisk = studentProfiles
       .filter(s => s.riskLevel === 'at-risk')
       .sort((a, b) => b.riskScore - a.riskScore)
       .slice(0, 5);
-    
+
     if (topAtRisk.length > 0) {
       doc.setFontSize(9);
       doc.setTextColor(0, 0, 0);
-      topAtRisk.forEach(student => {
+      topAtRisk.forEach((student, index) => {
         checkPageBreak(5);
-        doc.text(`${student.studentId}: Risk Score ${student.riskScore}`, 15, yPosition);
-        yPosition += 4;
+        doc.setFont(undefined, 'bold');
+        doc.text(`${index + 1}. ${student.studentId}`, margins.left + 2, yPosition);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(239, 68, 68);
+        doc.text(`Risk Score: ${student.riskScore}`, margins.left + 60, yPosition);
+        doc.setTextColor(0, 0, 0);
+        yPosition += 5;
       });
     } else {
-      doc.setFontSize(9);
-      doc.text('No students at critical risk', 15, yPosition);
-      yPosition += 4;
+      doc.setFontSize(10);
+      doc.setTextColor(16, 185, 129);
+      doc.text('✓ No students at critical risk', margins.left + 3, yPosition);
+      yPosition += 5;
     }
-    yPosition += 3;
+    yPosition += 5;
 
-    // Key Insights & Recommendations
-    checkPageBreak(30);
-    doc.setFontSize(12);
+    // Key Recommendations Section
+    checkPageBreak(50);
+    doc.setFontSize(14);
     doc.setTextColor(59, 130, 246);
-    doc.text('💡 Key Insights & Recommendations', 12, yPosition);
-    yPosition += 6;
-    
+    doc.text('Key Recommendations', margins.left, yPosition);
+    yPosition += 8;
+
     doc.setFontSize(9);
     doc.setTextColor(0, 0, 0);
     const insights = [
-      `• Monitor the ${riskDistribution.atRisk} at-risk students closely with intervention programs`,
-      `• Average risk score of ${avgRiskScore} suggests ${parseFloat(avgRiskScore) > 40 ? 'moderate institutional challenges' : 'a healthy student population'}`,
-      `• Schedule counseling sessions for the ${criticalStudents} students with critical scores`,
-      `• Review attendance patterns - a key indicator of dropout risk`,
-      `• Consider group tutoring programs for students with declining test scores`,
+      `Monitor the ${riskDistribution.atRisk} at-risk students closely with intervention programs.`,
+      `Average risk score of ${avgRiskScore} indicates ${parseFloat(avgRiskScore) > 40 ? 'moderate to significant institutional challenges' : 'a relatively healthy student population'}.`,
+      `Schedule counseling sessions for the ${criticalStudents} students with critical scores (≥70).`,
+      `Review attendance patterns weekly - a primary indicator of dropout risk.`,
+      `Consider group tutoring programs for students with declining test scores.`,
+      `Establish regular check-ins with watchlist students to prevent progression to at-risk status.`,
     ];
-    
+
     insights.forEach(insight => {
-      checkPageBreak(4);
-      doc.text(insight, 12, yPosition, { maxWidth: pageWidth - 24 });
-      yPosition += 4;
+      checkPageBreak(5);
+      doc.text(`• ${insight}`, margins.left + 2, yPosition, { maxWidth: pageWidth - 2 * margins.right - 2 });
+      yPosition += 5;
     });
     yPosition += 5;
 
-    checkPageBreak(10);
+    // Detailed Student Profiles Section
+    checkPageBreak(15);
     doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
-    doc.text('Detailed Student Risk Profiles', 12, yPosition);
-    yPosition += 7;
+    doc.text('Detailed Student Risk Profiles', margins.left, yPosition);
+    yPosition += 8;
 
-    doc.setFontSize(10);
-    
     // Table headers
-    const headers = ['Student ID', 'Risk Score', 'Risk Level'];
-    const columnWidths = [60, 50, 50];
-    const startX = 12;
-
-    // Headers background
+    doc.setFontSize(9);
     doc.setFillColor(59, 130, 246);
     doc.setTextColor(255, 255, 255);
-    doc.rect(startX, yPosition - 5, pageWidth - 24, 6, 'F');
+    doc.setFont(undefined, 'bold');
+
+    const headers = ['Student ID', 'Risk Score', 'Risk Level', 'Status'];
+    const colWidths = [40, 35, 40, 35];
+    let tableX = margins.left;
 
     headers.forEach((header, index) => {
-      let x = startX;
-      for (let i = 0; i < index; i++) {
-        x += columnWidths[i];
-      }
-      doc.text(header, x + 2, yPosition);
+      doc.text(header, tableX + 2, yPosition);
+      tableX += colWidths[index];
     });
 
-    yPosition += 8;
-    doc.setTextColor(0, 0, 0);
+    doc.setLineWidth(0.3);
+    doc.line(margins.left, yPosition + 1, pageWidth - margins.right, yPosition + 1);
+    yPosition += 6;
 
-    // Sort students by ID in ascending order
+    // Sort students by ID
     const sortedStudents = [...studentProfiles].sort((a, b) => 
       a.studentId.localeCompare(b.studentId)
     );
 
     // Student rows
-    sortedStudents.forEach(student => {
-      if (yPosition > pageHeight - 15) {
-        doc.addPage();
-        yPosition = 10;
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(0, 0, 0);
+
+    sortedStudents.forEach((student, idx) => {
+      checkPageBreak(5);
+
+      // Alternate row background
+      if (idx % 2 === 0) {
+        doc.setFillColor(245, 250, 255);
+        doc.rect(margins.left, yPosition - 3, pageWidth - 2 * margins.right, 4.5, 'F');
       }
 
-      let x = startX;
-      doc.text(student.studentId, x + 2, yPosition);
-      x += columnWidths[0];
+      tableX = margins.left;
 
-      doc.text(student.riskScore.toString(), x + 2, yPosition);
-      x += columnWidths[1];
+      // Student ID
+      doc.setFontSize(8);
+      doc.text(student.studentId, tableX + 2, yPosition);
+      tableX += colWidths[0];
 
-      // Color code the risk level
+      // Risk Score
+      doc.text(student.riskScore.toString(), tableX + 2, yPosition);
+      tableX += colWidths[1];
+
+      // Risk Level with color
       const getRiskColor = () => {
         switch (student.riskLevel) {
           case 'at-risk':
-            return [239, 68, 68] as [number, number, number];
+            return { color: [239, 68, 68], text: 'AT RISK' };
           case 'watchlist':
-            return [245, 158, 11] as [number, number, number];
+            return { color: [245, 158, 11], text: 'WATCHLIST' };
           default:
-            return [16, 185, 129] as [number, number, number];
+            return { color: [16, 185, 129], text: 'SAFE' };
         }
       };
-      
-      const riskColor = getRiskColor();
-      doc.setTextColor(riskColor[0], riskColor[1], riskColor[2]);
-      doc.text(student.riskLevel.toUpperCase(), x + 2, yPosition);
-      doc.setTextColor(0, 0, 0);
 
-      yPosition += 6;
+      const riskInfo = getRiskColor();
+      doc.setTextColor(...riskInfo.color);
+      doc.setFont(undefined, 'bold');
+      doc.text(riskInfo.text, tableX + 2, yPosition);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(0, 0, 0);
+      tableX += colWidths[2];
+
+      // Status indicator
+      doc.setFontSize(8);
+      const statusText = student.riskScore >= 70 ? '⚠️ Critical' : student.riskScore >= 60 ? '⚡ High' : '✓ Monitor';
+      doc.text(statusText, tableX + 2, yPosition);
+
+      yPosition += 5;
     });
+
+    // Final footer
+    addFooter();
 
     // Download
     const fileName = `EduSafe-Risk-Report-${new Date().toISOString().split('T')[0]}.pdf`;
