@@ -163,9 +163,9 @@ function Home() {
     summaryData.forEach(item => {
       doc.text(`${item.label}`, margins.left + 3, summaryY);
       doc.setTextColor(59, 130, 246);
-      doc.setFont(undefined, 'bold');
+      doc.setFont('', 'bold');
       doc.text(item.value.toString(), pageWidth - margins.right - 3, summaryY, { align: 'right' });
-      doc.setFont(undefined, 'normal');
+      doc.setFont('', 'normal');
       doc.setTextColor(0, 0, 0);
       summaryY += 5;
     });
@@ -187,9 +187,9 @@ function Home() {
 
     // Safe
     doc.setTextColor(16, 185, 129);
-    doc.setFont(undefined, 'bold');
+    doc.setFont('', 'bold');
     doc.text(`Safe: ${safePercent}% (${riskDistribution.safe} students)`, margins.left, yPosition);
-    doc.setFont(undefined, 'normal');
+    doc.setFont('', 'normal');
     doc.setDrawColor(16, 185, 129);
     doc.setFillColor(16, 185, 129);
     doc.rect(margins.left + 70, yPosition - 3, parseInt(safePercent) * 0.9, 4, 'F');
@@ -197,9 +197,9 @@ function Home() {
 
     // Watchlist
     doc.setTextColor(245, 158, 11);
-    doc.setFont(undefined, 'bold');
+    doc.setFont('', 'bold');
     doc.text(`Watchlist: ${watchlistPercent}% (${riskDistribution.watchlist} students)`, margins.left, yPosition);
-    doc.setFont(undefined, 'normal');
+    doc.setFont('', 'normal');
     doc.setDrawColor(245, 158, 11);
     doc.setFillColor(245, 158, 11);
     doc.rect(margins.left + 70, yPosition - 3, parseInt(watchlistPercent) * 0.9, 4, 'F');
@@ -207,9 +207,9 @@ function Home() {
 
     // At Risk
     doc.setTextColor(239, 68, 68);
-    doc.setFont(undefined, 'bold');
+    doc.setFont('', 'bold');
     doc.text(`At Risk: ${atRiskPercent}% (${riskDistribution.atRisk} students)`, margins.left, yPosition);
-    doc.setFont(undefined, 'normal');
+    doc.setFont('', 'normal');
     doc.setDrawColor(239, 68, 68);
     doc.setFillColor(239, 68, 68);
     doc.rect(margins.left + 70, yPosition - 3, parseInt(atRiskPercent) * 0.9, 4, 'F');
@@ -232,9 +232,9 @@ function Home() {
       doc.setTextColor(0, 0, 0);
       topAtRisk.forEach((student, index) => {
         checkPageBreak(5);
-        doc.setFont(undefined, 'bold');
+        doc.setFont('', 'bold');
         doc.text(`${index + 1}. ${student.studentId}`, margins.left + 2, yPosition);
-        doc.setFont(undefined, 'normal');
+        doc.setFont('', 'normal');
         doc.setTextColor(239, 68, 68);
         doc.text(`Risk Score: ${student.riskScore}`, margins.left + 60, yPosition);
         doc.setTextColor(0, 0, 0);
@@ -284,7 +284,7 @@ function Home() {
     doc.setFontSize(9);
     doc.setFillColor(59, 130, 246);
     doc.setTextColor(255, 255, 255);
-    doc.setFont(undefined, 'bold');
+    doc.setFont('', 'bold');
 
     const headers = ['Student ID', 'Risk Score', 'Risk Level', 'Status'];
     const colWidths = [40, 35, 40, 35];
@@ -305,7 +305,7 @@ function Home() {
     );
 
     // Student rows
-    doc.setFont(undefined, 'normal');
+    doc.setFont('', 'normal');
     doc.setTextColor(0, 0, 0);
 
     sortedStudents.forEach((student, idx) => {
@@ -332,19 +332,19 @@ function Home() {
       const getRiskColor = () => {
         switch (student.riskLevel) {
           case 'at-risk':
-            return { color: [239, 68, 68], text: 'AT RISK' };
+            return { color: [239, 68, 68] as [number, number, number], text: 'AT RISK' };
           case 'watchlist':
-            return { color: [245, 158, 11], text: 'WATCHLIST' };
+            return { color: [245, 158, 11] as [number, number, number], text: 'WATCHLIST' };
           default:
-            return { color: [16, 185, 129], text: 'SAFE' };
+            return { color: [16, 185, 129] as [number, number, number], text: 'SAFE' };
         }
       };
 
       const riskInfo = getRiskColor();
-      doc.setTextColor(...riskInfo.color);
-      doc.setFont(undefined, 'bold');
+      doc.setTextColor(riskInfo.color[0], riskInfo.color[1], riskInfo.color[2]);
+      doc.setFont('', 'bold');
       doc.text(riskInfo.text, tableX + 2, yPosition);
-      doc.setFont(undefined, 'normal');
+      doc.setFont('', 'normal');
       doc.setTextColor(0, 0, 0);
       tableX += colWidths[2];
 
