@@ -156,7 +156,7 @@ function Home() {
       { label: 'At Risk Students:', value: riskDistribution.atRisk },
       { label: 'Watchlist Students:', value: riskDistribution.watchlist },
       { label: 'Safe Students:', value: riskDistribution.safe },
-      { label: 'Critical Cases (Score ≥70):', value: criticalStudents },
+      { label: 'Critical Cases (Score >=70):', value: criticalStudents },
     ];
 
     let summaryY = yPosition - 3;
@@ -243,7 +243,7 @@ function Home() {
     } else {
       doc.setFontSize(10);
       doc.setTextColor(16, 185, 129);
-      doc.text('✓ No students at critical risk', margins.left + 3, yPosition);
+      doc.text('No students at critical risk', margins.left + 3, yPosition);
       yPosition += 5;
     }
     yPosition += 5;
@@ -260,7 +260,7 @@ function Home() {
     const insights = [
       `Monitor the ${riskDistribution.atRisk} at-risk students closely with intervention programs.`,
       `Average risk score of ${avgRiskScore} indicates ${parseFloat(avgRiskScore) > 40 ? 'moderate to significant institutional challenges' : 'a relatively healthy student population'}.`,
-      `Schedule counseling sessions for the ${criticalStudents} students with critical scores (≥70).`,
+      `Schedule counseling sessions for the ${criticalStudents} students with critical scores (>=70).`,
       `Review attendance patterns weekly - a primary indicator of dropout risk.`,
       `Consider group tutoring programs for students with declining test scores.`,
       `Establish regular check-ins with watchlist students to prevent progression to at-risk status.`,
@@ -350,7 +350,7 @@ function Home() {
 
       // Status indicator
       doc.setFontSize(8);
-      const statusText = student.riskScore >= 70 ? '⚠️ Critical' : student.riskScore >= 60 ? '⚡ High' : '✓ Monitor';
+      const statusText = student.riskScore >= 70 ? 'CRITICAL' : student.riskScore >= 60 ? 'HIGH' : 'MONITOR';
       doc.text(statusText, tableX + 2, yPosition);
 
       yPosition += 5;
