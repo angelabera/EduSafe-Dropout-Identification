@@ -134,8 +134,13 @@ function Home() {
     yPosition += 8;
     doc.setTextColor(0, 0, 0);
 
+    // Sort students by ID in ascending order
+    const sortedStudents = [...studentProfiles].sort((a, b) => 
+      a.studentId.localeCompare(b.studentId)
+    );
+
     // Student rows
-    studentProfiles.forEach(student => {
+    sortedStudents.forEach(student => {
       if (yPosition > pageHeight - 15) {
         doc.addPage();
         yPosition = 10;
