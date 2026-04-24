@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
-import { Shield, Zap, Lock, Activity, ChevronDown, Info } from 'lucide-react';
+import { Shield, Zap, Lock, Activity, ChevronDown, Info, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { jsPDF } from 'jspdf';
 import { CSVUpload, StudentTable, RiskChart, AlertBanner } from '../components';
 import { analyzeAllStudents, getRiskDistribution } from '../utils/riskCalculator';
 import heroBg from '../assets/hero-bg.svg';
@@ -62,6 +63,114 @@ function Home() {
   // Reset all data
   const handleReset = () => {
     setUploadState({ attendance: null, assessment: null, attempts: null });
+  };
+
+  // Download report as PDF
+  const handleDownloadReport = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    let yPosition = 10;
+
+    // Title
+    doc.setFontSize(20);
+    doc.setTextColor(59, 130, 246);
+    doc.text('EduSafe Risk Analysis Report', pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 10;
+
+    // Date
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 8;
+
+    // Summary Section
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Summary', 10, yPosition);
+    yPosition += 7;
+
+    doc.setFontSize(11);
+    const summaryData = [
+      `Total Students: ${studentProfiles.length}`,
+      `At Risk: ${riskDistribution.atRisk}`,
+      `Watchlist: ${riskDistribution.watchlist}`,
+      `Safe: ${riskDistribution.safe}`,
+    ];
+
+    summaryData.forEach(text => {
+      doc.text(text, 15, yPosition);
+      yPosition += 6;
+    });
+
+    yPosition += 5;
+
+    // Student Details Section
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Student Risk Profiles', 10, yPosition);
+    yPosition += 7;
+
+    doc.setFontSize(10);
+    
+    // Table headers
+    const headers = ['Student ID', 'Risk Score', 'Risk Level'];
+    const columnWidths = [60, 50, 50];
+    const startX = 10;
+
+    // Headers background
+    doc.setFillColor(59, 130, 246);
+    doc.setTextColor(255, 255, 255);
+    doc.rect(startX, yPosition - 5, pageWidth - 20, 6, 'F');
+
+    headers.forEach((header, index) => {
+      let x = startX;
+      for (let i = 0; i < index; i++) {
+        x += columnWidths[i];
+      }
+      doc.text(header, x + 2, yPosition);
+    });
+
+    yPosition += 8;
+    doc.setTextColor(0, 0, 0);
+
+    // Student rows
+    studentProfiles.forEach(student => {
+      if (yPosition > pageHeight - 15) {
+        doc.addPage();
+        yPosition = 10;
+      }
+
+      let x = startX;
+      doc.text(student.studentId, x + 2, yPosition);
+      x += columnWidths[0];
+
+      doc.text(student.riskScore.toString(), x + 2, yPosition);
+      x += columnWidths[1];
+
+      // Color code the risk level
+      const getRiskColor = () => {
+        switch (student.riskLevel) {
+          case 'at-risk':
+            return [239, 68, 68] as [number, number, number];
+          case 'watchlist':
+            return [245, 158, 11] as [number, number, number];
+          default:
+            return [16, 185, 129] as [number, number, number];
+        }
+      };
+      
+      const riskColor = getRiskColor();
+      doc.setTextColor(riskColor[0], riskColor[1], riskColor[2]);
+      doc.text(student.riskLevel.toUpperCase(), x + 2, yPosition);
+      doc.setTextColor(0, 0, 0);
+
+      yPosition += 6;
+    });
+
+    // Download
+    const fileName = `EduSafe-Risk-Report-${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(fileName);
   };
 
   return (
@@ -148,9 +257,15 @@ function Home() {
           </div>
 
           {isDataComplete && (
-            <button className="reset-btn" onClick={handleReset}>
-              Reset All Data
-            </button>
+            <div className="action-buttons">
+              <button className="reset-btn" onClick={handleReset}>
+                Reset All Data
+              </button>
+              <button className="download-report-btn" onClick={handleDownloadReport}>
+                <Download size={18} />
+                Download Report
+              </button>
+            </div>
           )}
         </section>
 
@@ -158,6 +273,7 @@ function Home() {
         {isDataComplete && (
           <AlertBanner atRiskCount={riskDistribution.atRisk} />
         )}
+            
 
         {/* Dashboard Section */}
         {isDataComplete && (
