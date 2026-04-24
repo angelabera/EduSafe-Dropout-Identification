@@ -158,7 +158,6 @@ function Home() {
     const cardWidth = (pageWidth - 2 * margins.left - 10) / 3; // 3 cards per row
     let cardX = margins.left;
     let cardY = yPosition;
-    let cardIndex = 0;
 
     metrics.forEach((metric, idx) => {
       // New row every 3 items
