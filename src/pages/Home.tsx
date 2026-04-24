@@ -189,7 +189,7 @@ function Home() {
     doc.setTextColor(0, 0, 0);
     const insights = [
       `• Monitor the ${riskDistribution.atRisk} at-risk students closely with intervention programs`,
-      `• Average risk score of ${avgRiskScore} suggests ${avgRiskScore > 40 ? 'moderate institutional challenges' : 'a healthy student population'}`,
+      `• Average risk score of ${avgRiskScore} suggests ${parseFloat(avgRiskScore) > 40 ? 'moderate institutional challenges' : 'a healthy student population'}`,
       `• Schedule counseling sessions for the ${criticalStudents} students with critical scores`,
       `• Review attendance patterns - a key indicator of dropout risk`,
       `• Consider group tutoring programs for students with declining test scores`,
